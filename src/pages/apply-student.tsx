@@ -1,12 +1,9 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { Helmet } from "react-helmet-async";
 import { SITE_NAME, SITE_URL, OG_IMAGE } from "@/lib/site-config";
 import { useLocation } from "wouter";
-import {
-  CreateStudentApplicationBody
-} from "@workspace/api-zod";
-import type { StudentApplicationInput } from "@workspace/api-client-react";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import emailjs from "@emailjs/browser";
@@ -15,6 +12,24 @@ const EMAILJS_SERVICE_ID = "service_svxvaug";
 const EMAILJS_TEMPLATE_ID = "template_dx6xzkq";
 const EMAILJS_PUBLIC_KEY = "yJhYmZW7IbcPE4MQ8";
 const RECIPIENT_EMAIL = "globalbridge.learning.ca@gmail.com";
+
+const CreateStudentApplicationBody = z.object({
+  studentName: z.string().min(1),
+  parentName: z.string().optional().default(""),
+  email: z.string().email(),
+  phone: z.string().optional().default(""),
+  country: z.string().min(1),
+  city: z.string().optional().default(""),
+  gradeLevel: z.enum(["elementary", "middle_school", "high_school", "post_secondary", "adult_learner"]),
+  subjects: z.array(z.string()).default([]),
+  primaryLanguage: z.string().min(1),
+  learningGoals: z.string().min(1),
+  accessibilityNeeds: z.string().optional().default(""),
+  background: z.enum(["newcomer", "refugee", "low_income", "general", "prefer_not_to_say"]),
+  consent: z.boolean(),
+});
+
+type StudentApplicationInput = z.infer<typeof CreateStudentApplicationBody>;
 
 const GRADE_LEVEL_LABELS: Record<string, string> = {
   elementary: "Elementary School",
@@ -218,11 +233,9 @@ export default function ApplyStudent() {
 
       <div className="container mx-auto px-4 py-12 sm:px-6 lg:px-8 max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          
           <div className="lg:col-span-4 space-y-8">
             <div>
               <h2 className="text-2xl font-bold font-serif mb-6">Why Choose Us?</h2>
-              
               <div className="space-y-6">
                 <div className="flex gap-4">
                   <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
@@ -233,7 +246,6 @@ export default function ApplyStudent() {
                     <p className="text-muted-foreground text-sm mt-1">Our tutors adapt to your pace and learning style for maximum understanding.</p>
                   </div>
                 </div>
-                
                 <div className="flex gap-4">
                   <div className="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center text-secondary-foreground shrink-0">
                     <Sparkles className="w-5 h-5" />
@@ -243,7 +255,6 @@ export default function ApplyStudent() {
                     <p className="text-muted-foreground text-sm mt-1">Quality education should be accessible to all. We never charge for our services.</p>
                   </div>
                 </div>
-                
                 <div className="flex gap-4">
                   <div className="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-accent-foreground shrink-0">
                     <Users className="w-5 h-5" />
@@ -253,7 +264,6 @@ export default function ApplyStudent() {
                     <p className="text-muted-foreground text-sm mt-1">Beyond academics, our tutors serve as positive role models and guides.</p>
                   </div>
                 </div>
-
                 <div className="flex gap-4">
                   <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center text-foreground shrink-0">
                     <BookOpen className="w-5 h-5" />
@@ -265,7 +275,6 @@ export default function ApplyStudent() {
                 </div>
               </div>
             </div>
-
             <Card className="bg-card">
               <CardHeader>
                 <CardTitle className="text-lg">Eligibility</CardTitle>
@@ -282,288 +291,125 @@ export default function ApplyStudent() {
             <Card>
               <CardHeader>
                 <CardTitle className="text-2xl font-serif">Student Application</CardTitle>
-                <CardDescription>
-                  Parents or guardians can fill this out on behalf of younger students.
-                </CardDescription>
+                <CardDescription>Parents or guardians can fill this out on behalf of younger students.</CardDescription>
               </CardHeader>
               <CardContent>
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                    
                     <div className="space-y-6">
                       <h3 className="text-lg font-semibold border-b pb-2">Student Information</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <FormField
-                          control={form.control}
-                          name="studentName"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Student's Full Name</FormLabel>
-                              <FormControl>
-                                <Input placeholder="Alex Smith" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <FormField
-                          control={form.control}
-                          name="parentName"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Parent/Guardian Name (Optional)</FormLabel>
-                              <FormControl>
-                                <Input placeholder="Sarah Smith" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
+                        <FormField control={form.control} name="studentName" render={({ field }) => (
+                          <FormItem><FormLabel>Student's Full Name</FormLabel><FormControl><Input placeholder="Alex Smith" {...field} /></FormControl><FormMessage /></FormItem>
+                        )} />
+                        <FormField control={form.control} name="parentName" render={({ field }) => (
+                          <FormItem><FormLabel>Parent/Guardian Name (Optional)</FormLabel><FormControl><Input placeholder="Sarah Smith" {...field} /></FormControl><FormMessage /></FormItem>
+                        )} />
                       </div>
-                      
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <FormField
-                          control={form.control}
-                          name="email"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Contact Email Address</FormLabel>
-                              <FormControl>
-                                <Input type="email" placeholder="contact@example.com" {...field} />
-                              </FormControl>
-                              <FormDescription>We will send matching details here.</FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <FormField
-                          control={form.control}
-                          name="phone"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Phone Number (Optional)</FormLabel>
-                              <FormControl>
-                                <Input placeholder="+1 (555) 000-0000" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
+                        <FormField control={form.control} name="email" render={({ field }) => (
+                          <FormItem><FormLabel>Contact Email Address</FormLabel><FormControl><Input type="email" placeholder="contact@example.com" {...field} /></FormControl><FormDescription>We will send matching details here.</FormDescription><FormMessage /></FormItem>
+                        )} />
+                        <FormField control={form.control} name="phone" render={({ field }) => (
+                          <FormItem><FormLabel>Phone Number (Optional)</FormLabel><FormControl><Input placeholder="+1 (555) 000-0000" {...field} /></FormControl><FormMessage /></FormItem>
+                        )} />
                       </div>
-
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <FormField
-                          control={form.control}
-                          name="country"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Country of Residence</FormLabel>
-                              <FormControl>
-                                <Input placeholder="Canada" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <FormField
-                          control={form.control}
-                          name="city"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>City (Optional)</FormLabel>
-                              <FormControl>
-                                <Input placeholder="Toronto" {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
+                        <FormField control={form.control} name="country" render={({ field }) => (
+                          <FormItem><FormLabel>Country of Residence</FormLabel><FormControl><Input placeholder="Canada" {...field} /></FormControl><FormMessage /></FormItem>
+                        )} />
+                        <FormField control={form.control} name="city" render={({ field }) => (
+                          <FormItem><FormLabel>City (Optional)</FormLabel><FormControl><Input placeholder="Toronto" {...field} /></FormControl><FormMessage /></FormItem>
+                        )} />
                       </div>
                     </div>
 
                     <div className="space-y-6">
                       <h3 className="text-lg font-semibold border-b pb-2">Academic Needs</h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <FormField
-                          control={form.control}
-                          name="gradeLevel"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Current Grade Level</FormLabel>
-                              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <FormControl>
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Select level" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                  <SelectItem value="elementary">Elementary School</SelectItem>
-                                  <SelectItem value="middle_school">Middle School</SelectItem>
-                                  <SelectItem value="high_school">High School</SelectItem>
-                                  <SelectItem value="post_secondary">Post-Secondary</SelectItem>
-                                  <SelectItem value="adult_learner">Adult Learner</SelectItem>
-                                </SelectContent>
-                              </Select>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        <FormField
-                          control={form.control}
-                          name="primaryLanguage"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Primary Language Spoken at Home</FormLabel>
-                              <FormControl>
-                                <Input placeholder="English, Arabic, Spanish..." {...field} />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
+                        <FormField control={form.control} name="gradeLevel" render={({ field }) => (
+                          <FormItem><FormLabel>Current Grade Level</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl><SelectTrigger><SelectValue placeholder="Select level" /></SelectTrigger></FormControl>
+                              <SelectContent>
+                                <SelectItem value="elementary">Elementary School</SelectItem>
+                                <SelectItem value="middle_school">Middle School</SelectItem>
+                                <SelectItem value="high_school">High School</SelectItem>
+                                <SelectItem value="post_secondary">Post-Secondary</SelectItem>
+                                <SelectItem value="adult_learner">Adult Learner</SelectItem>
+                              </SelectContent>
+                            </Select><FormMessage /></FormItem>
+                        )} />
+                        <FormField control={form.control} name="primaryLanguage" render={({ field }) => (
+                          <FormItem><FormLabel>Primary Language Spoken at Home</FormLabel><FormControl><Input placeholder="English, Arabic, Spanish..." {...field} /></FormControl><FormMessage /></FormItem>
+                        )} />
                       </div>
-                      
-                      <FormField
-                        control={form.control}
-                        name="subjects"
-                        render={() => (
-                          <FormItem>
-                            <div className="mb-4">
-                              <FormLabel className="text-base">Subjects needed</FormLabel>
-                              <FormDescription>Select the subjects where you need the most help.</FormDescription>
-                            </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                              {subjects.map((subject) => (
-                                <FormField
-                                  key={subject.id}
-                                  control={form.control}
-                                  name="subjects"
-                                  render={({ field }) => {
-                                    return (
-                                      <FormItem
-                                        key={subject.id}
-                                        className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow-sm hover:border-primary/50 transition-colors"
-                                      >
-                                        <FormControl>
-                                          <Checkbox
-                                            checked={field.value?.includes(subject.id as any)}
-                                            onCheckedChange={(checked) => {
-                                              return checked
-                                                ? field.onChange([...field.value, subject.id])
-                                                : field.onChange(
-                                                    field.value?.filter(
-                                                      (value) => value !== subject.id
-                                                    )
-                                                  )
-                                            }}
-                                          />
-                                        </FormControl>
-                                        <div className="space-y-1 leading-none w-full">
-                                          <FormLabel className="font-normal cursor-pointer">
-                                            {subject.label}
-                                          </FormLabel>
-                                        </div>
-                                      </FormItem>
-                                    )
-                                  }}
-                                />
-                              ))}
-                            </div>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
 
-                      <FormField
-                        control={form.control}
-                        name="learningGoals"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>What are your main learning goals?</FormLabel>
-                            <FormControl>
-                              <Textarea 
-                                placeholder="E.g., Improve reading comprehension, prepare for a math test, practice speaking English..." 
-                                className="min-h-[100px] resize-y"
-                                {...field} 
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                      <FormField control={form.control} name="subjects" render={() => (
+                        <FormItem>
+                          <div className="mb-4"><FormLabel className="text-base">Subjects needed</FormLabel><FormDescription>Select the subjects where you need the most help.</FormDescription></div>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            {subjects.map((subject) => (
+                              <FormField key={subject.id} control={form.control} name="subjects" render={({ field }) => (
+                                <FormItem key={subject.id} className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 shadow-sm hover:border-primary/50 transition-colors">
+                                  <FormControl>
+                                    <Checkbox
+                                      checked={field.value?.includes(subject.id)}
+                                      onCheckedChange={(checked) => {
+                                        return checked
+                                          ? field.onChange([...field.value, subject.id])
+                                          : field.onChange(field.value?.filter((value) => value !== subject.id))
+                                      }}
+                                    />
+                                  </FormControl>
+                                  <div className="space-y-1 leading-none w-full"><FormLabel className="font-normal cursor-pointer">{subject.label}</FormLabel></div>
+                                </FormItem>
+                              )} />
+                            ))}
+                          </div>
+                          <FormMessage />
+                        </FormItem>
+                      )} />
 
-                      <FormField
-                        control={form.control}
-                        name="accessibilityNeeds"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Any accessibility needs or accommodations? (Optional)</FormLabel>
-                            <FormControl>
-                              <Textarea 
-                                placeholder="Let us know how we can best support your learning..." 
-                                className="min-h-[80px] resize-y"
-                                {...field} 
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
+                      <FormField control={form.control} name="learningGoals" render={({ field }) => (
+                        <FormItem><FormLabel>What are your main learning goals?</FormLabel><FormControl><Textarea placeholder="E.g., Improve reading comprehension..." className="min-h-[100px] resize-y" {...field} /></FormControl><FormMessage /></FormItem>
+                      )} />
+                      <FormField control={form.control} name="accessibilityNeeds" render={({ field }) => (
+                        <FormItem><FormLabel>Any accessibility needs? (Optional)</FormLabel><FormControl><Textarea placeholder="Let us know how we can best support your learning..." className="min-h-[80px] resize-y" {...field} /></FormControl><FormMessage /></FormItem>
+                      )} />
                     </div>
 
                     <div className="space-y-6">
                       <h3 className="text-lg font-semibold border-b pb-2">Background Information</h3>
-                      <p className="text-sm text-muted-foreground">We prioritize serving specific communities, but we do not require proof. This information helps us match you with the best resources.</p>
-                      
-                      <FormField
-                          control={form.control}
-                          name="background"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>Student Background / Circumstances</FormLabel>
-                              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <FormControl>
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Select background" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                  <SelectItem value="newcomer">Newcomer / Recent Immigrant</SelectItem>
-                                  <SelectItem value="refugee">Refugee / Asylum Seeker</SelectItem>
-                                  <SelectItem value="low_income">Low-Income Household</SelectItem>
-                                  <SelectItem value="general">General Applicant</SelectItem>
-                                  <SelectItem value="prefer_not_to_say">Prefer Not to Say</SelectItem>
-                                </SelectContent>
-                              </Select>
-                              <FormDescription>
-                                This helps us understand your context. We welcome all students.
-                              </FormDescription>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
+                      <p className="text-sm text-muted-foreground">We prioritize serving specific communities, but we do not require proof.</p>
+                      <FormField control={form.control} name="background" render={({ field }) => (
+                        <FormItem><FormLabel>Student Background / Circumstances</FormLabel>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl><SelectTrigger><SelectValue placeholder="Select background" /></SelectTrigger></FormControl>
+                            <SelectContent>
+                              <SelectItem value="newcomer">Newcomer / Recent Immigrant</SelectItem>
+                              <SelectItem value="refugee">Refugee / Asylum Seeker</SelectItem>
+                              <SelectItem value="low_income">Low-Income Household</SelectItem>
+                              <SelectItem value="general">General Applicant</SelectItem>
+                              <SelectItem value="prefer_not_to_say">Prefer Not to Say</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormDescription>This helps us understand your context. We welcome all students.</FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )} />
                     </div>
 
                     <div className="flex items-start gap-3 rounded-lg bg-muted/50 p-4">
-                      <FormField
-                        control={form.control}
-                        name="consent"
-                        render={({ field }) => (
-                          <FormItem className="flex flex-row items-start space-y-0 gap-3">
-                            <FormControl>
-                              <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                            </FormControl>
-                            <div className="space-y-1 leading-none">
-                              <FormLabel className="font-normal">
-                                I consent to Global Bridge Learning Initiative contacting me about this application.
-                              </FormLabel>
-                              <FormDescription>
-                                We will only use your contact information to respond to this application.
-                              </FormDescription>
-                            </div>
-                          </FormItem>
-                        )}
-                      />
+                      <FormField control={form.control} name="consent" render={({ field }) => (
+                        <FormItem className="flex flex-row items-start space-y-0 gap-3">
+                          <FormControl><Checkbox checked={field.value} onCheckedChange={field.onChange} /></FormControl>
+                          <div className="space-y-1 leading-none">
+                            <FormLabel className="font-normal">I consent to Global Bridge Learning Initiative contacting me about this application.</FormLabel>
+                            <FormDescription>We will only use your contact information to respond to this application.</FormDescription>
+                          </div>
+                        </FormItem>
+                      )} />
                     </div>
 
                     <Button type="submit" disabled={isSubmitting} className="w-full h-12 text-base">
