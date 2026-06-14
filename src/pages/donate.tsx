@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { SITE_NAME, SITE_URL, OG_IMAGE } from "@/lib/site-config";
-import { Mail, Instagram, ArrowUpRight, Heart, BookOpen, Globe2, HeartHandshake } from "lucide-react";
+import { Mail, Instagram, ArrowUpRight, BookOpen, Globe2, HeartHandshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const CONTACT_EMAIL = "globalbridge.learning.ca@gmail.com";

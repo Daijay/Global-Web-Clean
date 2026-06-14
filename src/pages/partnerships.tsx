@@ -1,6 +1,5 @@
 import { Helmet } from "react-helmet-async";
 import { SITE_NAME, SITE_URL, OG_IMAGE } from "@/lib/site-config";
-import { Button } from "@/components/ui/button";
 import { Building2, GraduationCap, Handshake, Instagram, Mail } from "lucide-react";
 import { ScrollReveal, StaggerGroup, StaggerItem } from "@/components/ScrollReveal";
 

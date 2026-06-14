@@ -1,4 +1,23 @@
-import type { Program, TeamMember } from "@workspace/api-client-react";
+export interface Program {
+  id: number;
+  slug: string;
+  name: string;
+  tagline: string;
+  description: string;
+  gradeLevels: string;
+  topics: string[];
+  mentorshipFocus: string;
+}
+
+export interface TeamMember {
+  id: number;
+  name: string;
+  role: string;
+  category: string;
+  bio: string;
+  location: string;
+  initials: string;
+}
 
 export const PROGRAMS: Program[] = [
   {
