@@ -160,4 +160,22 @@ export const TEAM_MEMBERS: TeamMember[] = [
     location: "Canada",
     initials: "JD",
   },
+  {
+    id: 8,
+    name: "Amanda",
+    role: "Director of Scheduling",
+    category: "executive",
+    bio: "Leads scheduling across the organization, overseeing how tutoring sessions are planned and coordinated between students and tutors.",
+    location: "Canada",
+    initials: "AM",
+  },
+  {
+    id: 9,
+    name: "Harriet",
+    role: "Assistant Director of Scheduling",
+    category: "executive",
+    bio: "Coordinates tutoring schedules and session timing, helping match students and tutors and keeping sessions running smoothly.",
+    location: "Canada",
+    initials: "HA",
+  },
 ];
