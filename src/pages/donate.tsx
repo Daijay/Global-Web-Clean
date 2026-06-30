@@ -36,7 +36,7 @@ export default function Donate() {
             Invest in <span className="text-primary">potential.</span>
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed text-pretty">
-            Your support keeps our tutoring free for every student and helps us reach more learners around the world. To donate, just send us an email or reach out on Instagram &mdash; we'll take care of the rest.
+            Your support keeps our tutoring free for every student and helps us reach more learners around the world. To donate, just send us an email or reach out on Instagram, and we'll take care of the rest.
           </p>
         </div>
       </div>

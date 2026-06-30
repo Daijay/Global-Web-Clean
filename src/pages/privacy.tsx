@@ -22,8 +22,8 @@ const SECTIONS: Section[] = [
           <li>The message you submit</li>
         </ul>
         <p>
-          If you choose to donate, you'll be directed to contact us via Instagram DM or email
-          &mdash; we do not collect payment information directly through this site.
+          If you choose to donate, you'll be directed to contact us via Instagram DM or email.
+          We do not collect payment information directly through this site.
         </p>
         <p>
           We do not use tracking cookies, analytics, or third-party advertising tools at this time.

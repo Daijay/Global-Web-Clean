@@ -44,7 +44,7 @@ export default function ProgramDetail() {
         <meta property="og:image" content={OG_IMAGE} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content={`${program.name} — Global Bridge Learning Initiative`} />
+        <meta property="og:image:alt" content={`${program.name} | Global Bridge Learning Initiative`} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${program.name} | Global Bridge Learning Initiative`} />
         <meta name="twitter:description" content={program.description} />

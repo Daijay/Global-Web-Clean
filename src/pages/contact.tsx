@@ -40,7 +40,7 @@ export default function Contact() {
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed text-pretty">
             Have a question, suggestion, or media inquiry? Reach out to us by
-            email or send us a message on Instagram &mdash; we usually reply
+            email or send us a message on Instagram, and we usually reply
             within two business days.
           </p>
         </div>

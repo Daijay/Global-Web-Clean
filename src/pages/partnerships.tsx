@@ -5,7 +5,7 @@ import { ScrollReveal, StaggerGroup, StaggerItem } from "@/components/ScrollReve
 
 const INSTAGRAM_URL = "https://www.instagram.com/global.bridge.ca?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==";
 const EMAIL_ADDRESS = "globalbridge.learning.ca@gmail.com";
-const EMAIL_SUBJECT = "Partnership Inquiry — Global Bridge Learning Initiative";
+const EMAIL_SUBJECT = "Partnership Inquiry: Global Bridge Learning Initiative";
 
 export default function Partnerships() {
   return (
@@ -46,7 +46,7 @@ export default function Partnerships() {
       <div className="container mx-auto px-4 py-16 sm:px-6 lg:px-8 max-w-6xl">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
 
-          {/* Left column — Ways to Collaborate + Our Commitment */}
+          {/* Left column - Ways to Collaborate + Our Commitment */}
           <div className="lg:col-span-5 space-y-12">
             <ScrollReveal>
               <h2 className="text-2xl font-bold font-serif mb-6">Ways to Collaborate</h2>
@@ -94,7 +94,7 @@ export default function Partnerships() {
             </ScrollReveal>
           </div>
 
-          {/* Right column — Get In Touch */}
+          {/* Right column - Get In Touch */}
           <div className="lg:col-span-7">
             <ScrollReveal>
               <div className="relative bg-card border border-border/70 rounded-3xl p-10 md:p-12 shadow-sm overflow-hidden">
@@ -148,7 +148,7 @@ export default function Partnerships() {
                 </StaggerGroup>
 
                 <p className="text-xs text-muted-foreground/70 text-center mt-8">
-                  Not sure where to start? Either channel works — our team monitors both regularly.
+                  Not sure where to start? Either channel works, and our team monitors both regularly.
                 </p>
               </div>
             </ScrollReveal>
