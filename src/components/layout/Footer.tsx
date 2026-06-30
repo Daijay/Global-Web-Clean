@@ -101,7 +101,7 @@ export default function Footer() {
                 <h3 className="text-xs font-semibold text-foreground tracking-wider uppercase">Legal</h3>
                 <ul className="mt-4 space-y-3">
                   <li>
-                    <a href="#legal" onClick={(e) => e.preventDefault()} className="text-sm text-muted-foreground hover:text-primary transition-colors">Privacy Policy</a>
+                    <Link href="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">Privacy Policy</Link>
                   </li>
                   <li>
                     <a href="#legal" onClick={(e) => e.preventDefault()} className="text-sm text-muted-foreground hover:text-primary transition-colors">Terms of Service</a>

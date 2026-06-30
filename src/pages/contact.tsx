@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { SITE_NAME, SITE_URL, OG_IMAGE } from "@/lib/site-config";
-import { Mail, Instagram, ArrowUpRight } from "lucide-react";
+import { Link } from "wouter";
+import { Mail, Instagram, ArrowUpRight, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const CONTACT_EMAIL = "globalbridge.learning.ca@gmail.com";
@@ -105,6 +106,18 @@ export default function Contact() {
               </a>
             </Button>
           </div>
+
+          <p className="mt-8 text-center text-sm text-muted-foreground">
+            By reaching out, you agree to how we handle your information. Read our{" "}
+            <Link
+              href="/privacy"
+              className="inline-flex items-center gap-1 font-medium text-primary underline-offset-4 hover:underline"
+            >
+              <ShieldCheck className="w-4 h-4" />
+              Privacy Policy
+            </Link>
+            .
+          </p>
         </div>
       </div>
     </>

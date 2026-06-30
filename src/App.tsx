@@ -16,6 +16,7 @@ import Team from "@/pages/team";
 import Donate from "@/pages/donate";
 import Partnerships from "@/pages/partnerships";
 import Contact from "@/pages/contact";
+import Privacy from "@/pages/privacy";
 
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -56,6 +57,7 @@ function Router() {
           <Route path="/donate" component={Donate} />
           <Route path="/partnerships" component={Partnerships} />
           <Route path="/contact" component={Contact} />
+          <Route path="/privacy" component={Privacy} />
           <Route component={NotFound} />
         </Switch>
       </main>
